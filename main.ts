@@ -2,11 +2,10 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { setFlagsFromString } from 'node:v8';
-import { pathToFileURL } from 'node:url';
 
 // The same V8 flag the house baseline uses, applied before solve.js is loaded.
 setFlagsFromString('--no-incremental-marking');
-const solveUrl = pathToFileURL(join(process.cwd(), 'solve.js')).href;
+const solveUrl = new URL('./solve.js', import.meta.url).href;
 const run = (await import(solveUrl)).run;
 
 const inDir = process.env.MAKEFUN_INPUT_DIR || '/input';
